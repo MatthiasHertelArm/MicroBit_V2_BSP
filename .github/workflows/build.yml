@@ -36,6 +36,13 @@ jobs:
       - name: Initialize the pack root
         run: cpackget init --pack-root "${CMSIS_PACK_ROOT}" https://www.keil.com/pack/index.pidx
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the knowledge builder
+        run: python3 -m pip install cmsis-developer-assistant-tools==0.1.0
+
       - name: Generate the pack
         run: ./gen_pack.sh
 

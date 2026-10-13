@@ -2,7 +2,7 @@
 id: ts-csolution-compiler-undefined-no-toolchain
 type: troubleshooting
 title: "VS Code CMSIS build: compiler undefined / no compiler registered although GCC is installed through vcpkg"
-summary: The CMSIS Solution extension exports only the tools of the activated Arm Environment Manager configuration. Without a vcpkg-configuration.json in the workspace root nothing registers a compiler (.cmsis/tools-environment.yml lists no GCC_TOOLCHAIN variable) and cbuild stops with "compiler undefined". Add the configuration at the workspace root; the extension then writes compiler: into the csolution.
+summary: "The CMSIS Solution extension registers only the tools of the activated Arm Environment Manager configuration; without vcpkg-configuration.json in the workspace root no compiler is registered and cbuild stops. Add the configuration at the workspace root."
 domain: project
 status: draft
 tool: csolution
@@ -12,7 +12,7 @@ symptoms:
   - "warning csolution: no compiler registered. Add path to compiler 'bin' directory with environment variable <name>_TOOLCHAIN_<major>_<minor>_<patch>"
 symptom_regex: "compiler undefined, use '--toolchain' option"
 applies_to:
-  tool: [csolution, cbuild, cmsis-csolution-extension, environment-manager]
+  tool: [csolution, cbuild, cmsis-solution, vcpkg]
 source: own observation 2026-10-13 with arm.cmsis-csolution 1.72.0 and CMSIS-Toolbox 2.15.0
 license: Apache-2.0
 confidence: high

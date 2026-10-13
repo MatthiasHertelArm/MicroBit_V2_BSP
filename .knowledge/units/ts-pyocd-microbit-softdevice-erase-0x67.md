@@ -2,7 +2,7 @@
 id: ts-pyocd-microbit-softdevice-erase-0x67
 type: troubleshooting
 title: "pyOCD: flash erase sector failure (address 0x00000000; result code 0x67) on a factory-programmed micro:bit V2"
-summary: Nordic's standard flash algorithm nrf52xxx.flm refuses to erase sectors that hold a SoftDevice; the factory micro:bit firmware contains one. A chip erase through the same algorithm reports success but leaves the SoftDevice sectors, so the next sector erase fails again. Program the board once by drag-and-drop to the MICROBIT drive, or use a mass erase or Nordic's nrf52xxx_sde.flm.
+summary: "Nordic's nrf52xxx.flm refuses to erase sectors holding a SoftDevice, which the factory micro:bit firmware contains, and a chip erase through it leaves them. Program the board once by drag-and-drop to the MICROBIT drive, or use a mass erase or nrf52xxx_sde.flm."
 domain: debug
 status: draft
 tool: pyocd
@@ -12,8 +12,8 @@ symptoms:
   - "'CMSIS Load' exited with code 1"
 symptom_regex: "flash erase sector failure \\(address 0x[0-9A-Fa-f]+; result code 0x67\\)"
 applies_to:
-  tool: [pyocd, cbuild-run, cmsis-debugger]
-  device: [nRF52833, nRF52840, nRF52832]
+  tool: [pyocd, cmsis-debugger]
+  device: [nRF52833_xxAA]
   board: [microbit-v2]
   pack: [NordicSemiconductor::nRF_DeviceFamilyPack]
 source: own observation 2026-10-13 on micro:bit V2.2 (DAPLink 0257, pyOCD 0.45.1); pyocd/pyOCD issue 1262

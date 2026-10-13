@@ -2,7 +2,7 @@
 id: ts-csolution-local-pack-path-schema
 type: troubleshooting
 title: "csolution: schema check failed for a packs entry with path: but without pack:"
-summary: A local pack directory is referenced in csolution packs: with both pack: Vendor::Name and path:; a bare path: entry fails the schema check.
+summary: "A local pack directory is referenced in csolution packs: with both pack: Vendor::Name and path:; a bare path: entry fails the schema check."
 domain: project
 status: draft
 tool: csolution

@@ -2,6 +2,9 @@
 /build/
 /output/
 
+# built by cmsis-knowledge from .knowledge/units
+/.knowledge/knowledge.db
+
 # csolution build output
 **/out/
 **/tmp/

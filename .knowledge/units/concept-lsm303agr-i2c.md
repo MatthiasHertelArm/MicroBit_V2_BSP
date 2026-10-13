@@ -2,7 +2,7 @@
 id: concept-lsm303agr-i2c
 type: concept
 title: "LSM303AGR over I2C: addresses, registers and scaling as used on the micro:bit V2"
-summary: Accelerometer at 0x19 (WHO_AM_I_A 0x0F = 0x33), magnetometer at 0x1E (WHO_AM_I_M 0x4F = 0x40). Multi-byte access needs bit 7 of the sub-address (auto-increment). Accel HR mode +-2 g: 12-bit left-justified, 0.98 mg/digit; magnetometer 1.5 mgauss/LSB. Minimal configuration CTRL_REG1_A=0x57, CTRL_REG4_A=0x88, CFG_REG_A_M=0x80, CFG_REG_B_M=0x02, CFG_REG_C_M=0x10.
+summary: "Accelerometer at I2C 0x19 (WHO_AM_I_A 0x0F reads 0x33), magnetometer at 0x1E (WHO_AM_I_M 0x4F reads 0x40); bit 7 of the sub-address enables auto-increment; register values, scaling and a minimal configuration as verified on the micro:bit V2."
 domain: board
 status: draft
 applies_to:

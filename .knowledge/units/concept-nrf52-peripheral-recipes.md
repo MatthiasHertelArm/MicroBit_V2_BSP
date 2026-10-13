@@ -2,7 +2,7 @@
 id: concept-nrf52-peripheral-recipes
 type: concept
 title: "nRF52833 bare-metal peripheral recipes verified on the micro:bit V2 (UARTE, TWIM, SAADC, PWM, TIMER, TEMP, GPIO)"
-summary: Register sequences from the BSP drivers that ran on hardware. EasyDMA pointers must point to RAM; use SHORTS LASTTX_STOP / LASTTX_STARTRX+LASTRX_STOP for TWIM; UARTE ENDRX_STARTRX short for continuous receive; SAADC one-shot START/SAMPLE/STOP; PWM tone with 1 MHz prescaler and LOOPSDONE_SEQSTART0 short; TIMER1 1 MHz with COMPARE0_CLEAR for a 1 ms interrupt; TEMP START/DATARDY/TEMP in 0.25 C.
+summary: "Register sequences of the BSP drivers that ran on hardware: UARTE continuous receive, TWIM with SHORTS, SAADC one-shot, PWM tones, TIMER1 1 ms interrupt, TEMP; EasyDMA pointers must point to RAM."
 domain: device
 status: draft
 applies_to:

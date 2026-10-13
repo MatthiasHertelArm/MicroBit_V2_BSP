@@ -2,7 +2,7 @@
 id: concept-nordic-dfp-cmsis-toolbox
 type: concept
 title: "Using NordicSemiconductor::nRF_DeviceFamilyPack 8.44.1 with the CMSIS-Toolbox"
-summary: The Nordic DFP (pdsc schema 1.3, 2021) loads in csolution 2.15 and provides device, SVD, flash algorithms and Device:Startup for nRF52833_xxAA, but its startup files are assembler files for ARMCC/GCC/IAR and it ships no toolbox linker script. The GCC startup keeps the vector table in .isr_vector, which the toolbox GCC linker template does not place at the start of Flash, so a BSP or project must carry an adapted linker script.
+summary: "The Nordic DFP 8.44.1 loads in csolution and provides device, SVD, flash algorithms and Device:Startup for nRF52833_xxAA, but ships no toolbox linker script; its GCC startup keeps vectors in .isr_vector, so a BSP or project needs an adapted linker script."
 domain: pack
 status: draft
 applies_to:

@@ -7,7 +7,7 @@ domain: project
 status: draft
 applies_to:
   board: [microbit-v2]
-  tool: [cmsis_action, pyocd, cmsis-debugger, serial_open]
+  tool: [pyocd, cmsis-debugger]
 triggers:
   - first download to a micro:bit V2
   - validating a pack or example on the micro:bit V2
@@ -17,6 +17,8 @@ preconditions:
 stop_conditions:
   - "MAINTENANCE drive instead of MICROBIT: ask the user to replug the board (ts-daplink-maintenance-mode)"
   - "flash erase sector failure 0x67: program once by drag-and-drop (ts-pyocd-microbit-softdevice-erase-0x67)"
+references: [concept-nordic-dfp-cmsis-toolbox, ts-csolution-compiler-undefined-no-toolchain, ts-daplink-maintenance-mode,
+  ts-pyocd-microbit-softdevice-erase-0x67]
 source: own work 2026-10-09 to 2026-10-13
 license: Apache-2.0
 ---

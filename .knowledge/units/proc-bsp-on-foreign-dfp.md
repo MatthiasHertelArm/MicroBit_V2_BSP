@@ -2,7 +2,7 @@
 id: proc-bsp-on-foreign-dfp
 type: procedure
 title: "bsp-on-foreign-dfp"
-summary: Create a Board Support Pack for a board whose MCU vendor DFP predates the CMSIS-Toolbox: decide BSP-only versus DFP+BSP, reuse the vendor pack, fix what the toolbox needs in the example, validate with packchk and on hardware.
+summary: "Create a Board Support Pack for a board whose MCU vendor DFP predates the CMSIS-Toolbox: decide BSP-only versus DFP+BSP, reuse the vendor pack, fix what the toolbox needs in the example, validate with packchk and on hardware."
 domain: pack
 status: draft
 applies_to:

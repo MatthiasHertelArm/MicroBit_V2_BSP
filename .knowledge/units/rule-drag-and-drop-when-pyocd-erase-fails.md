@@ -2,12 +2,12 @@
 id: rule-drag-and-drop-when-pyocd-erase-fails
 type: rule
 title: "On DAPLink boards, use the mass-storage programmer once when the vendor flash algorithm refuses to erase"
-summary: When pyOCD's sector erase fails with an algorithm result code on a board that also offers DAPLink drag-and-drop programming, copy the .hex to the drive once instead of changing the debugger configuration. It removes vendor bootloaders or SoftDevices and leaves the flash in a state the standard algorithm accepts.
+summary: "When pyOCD's sector erase fails with an algorithm result code on a DAPLink board, copy the .hex to the DAPLink drive once instead of changing the debugger configuration; it clears vendor bootloaders or SoftDevices the algorithm refuses to erase."
 domain: debug
 status: draft
 applies_to:
   tool: [pyocd, daplink]
-  board: [microbit-v2, microbit-v1, nRF52-DK, FRDM-*]
+  board: [microbit-v2]
 source: own observation 2026-10-13
 license: Apache-2.0
 ---

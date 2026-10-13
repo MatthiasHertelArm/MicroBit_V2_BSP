@@ -2,7 +2,7 @@
 id: concept-microbit-v2-hardware
 type: concept
 title: "BBC micro:bit V2 hardware: parts, pin map and electrical notes"
-summary: Target nRF52833-QIAA (Cortex-M4F, 512 KB Flash, 128 KB RAM, 32 MHz HFXO), interface MCU nRF52820 (V2.2x, DAPLink; KL27Z on V2.0), LSM303AGR motion sensor on the internal I2C bus (0x19/0x1E, 1 kOhm pull-ups), Knowles SPU0410LR5H-QB-7 analog microphone on AIN3 powered from RUN_MIC, MLT-8530 speaker through a MOSFET on P0.00, 5x5 LED matrix (rows source, columns sink), buttons with 10 kOhm pull-ups, touch logo and rings with 10 MOhm pull-ups, UART to DAPLink TX P0.06 / RX P1.08.
+summary: "nRF52833-QIAA target (Cortex-M4F, 512 KB Flash, 128 KB RAM) with an nRF52820 DAPLink interface MCU, LSM303AGR motion sensor on internal I2C, analog microphone, speaker on P0.00, 5x5 LED matrix, buttons, touch logo; pin map and electrical notes."
 domain: board
 status: draft
 applies_to:

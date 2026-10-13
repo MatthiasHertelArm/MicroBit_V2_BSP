@@ -2,7 +2,7 @@
 id: ts-daplink-maintenance-mode
 type: troubleshooting
 title: "micro:bit shows a MAINTENANCE drive and no CMSIS-DAP probe"
-summary: The DAPLink interface MCU is in bootloader mode (reset held while plugging in). Neither the MICROBIT drive nor the CMSIS-DAP HID/CDC interfaces exist, so pyOCD finds no probe and the serial port is gone. Unplug and replug the board without touching reset.
+summary: "The DAPLink interface MCU is in bootloader mode (reset held while plugging in): no MICROBIT drive, no CMSIS-DAP probe, no serial port. Unplug and replug the board without touching reset."
 domain: debug
 status: draft
 tool: daplink
@@ -13,7 +13,7 @@ symptoms:
   - "Waiting for a debug probe"
 applies_to:
   tool: [pyocd, daplink, cmsis-debugger]
-  board: [microbit-v2, microbit-v1]
+  board: [microbit-v2]
 source: own observation 2026-10-13 on micro:bit V2.2 (DAPLink 0257)
 license: Apache-2.0
 confidence: high

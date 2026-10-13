@@ -25,6 +25,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the knowledge builder
+        run: python3 -m pip install cmsis-developer-assistant-tools==0.1.0
+
       - name: Generate pack
         uses: Open-CMSIS-Pack/gen-pack-action@main
         with:

@@ -32,6 +32,7 @@ PACK_DIRS="
   Board
   Documents
   Examples
+  .knowledge
 "
 
 # Specify file names to be added to pack base directory
@@ -104,6 +105,10 @@ PACKCHK_DEPS="
 function preprocess() {
   # add custom steps here to be executed
   # before populating the pack build folder
+
+  # Knowledge for the CMSIS Developer Assistant: .knowledge/units/*.md -> .knowledge/knowledge.db
+  # (pip install cmsis-developer-assistant-tools). gen-pack ignores the return value, so stop here on failure.
+  cmsis-knowledge build --strict --fetch . || exit 1
   return 0
 }
 

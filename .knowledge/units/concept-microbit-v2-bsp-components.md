@@ -2,7 +2,7 @@
 id: concept-microbit-v2-bsp-components
 type: concept
 title: "MicroBit::MicroBit_V2_BSP: components, examples and how to use them"
-summary: Board Support Pack on top of NordicSemiconductor::nRF_DeviceFamilyPack and ARM::CMSIS. Board MicroBit::microbit-v2 (mounted nRF52833_xxAA, CMSIS-DAP probe), CMSIS-Driver VIO for the top LED row and buttons, and Board Support components GPIO, Time, UART, I2C, Motion Sensor, LED Matrix, Buttons, Touch, Speaker, Microphone, Temperature behind the header microbit_v2.h. Examples Blinky and BoardTest.
+summary: "Board Support Pack on top of the Nordic DFP and ARM::CMSIS: board MicroBit::microbit-v2, CMSIS-Driver VIO, and Board Support components (GPIO, Time, UART, I2C, Motion Sensor, LED Matrix, Buttons, Touch, Speaker, Microphone, Temperature) behind microbit_v2.h; examples Blinky and BoardTest."
 domain: pack
 status: draft
 applies_to:
