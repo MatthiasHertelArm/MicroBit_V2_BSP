@@ -33,13 +33,14 @@ jobs:
         with:
           config: ./vcpkg-configuration.json
 
+      - name: Initialize the pack root
+        run: cpackget init --pack-root "${CMSIS_PACK_ROOT}" https://www.keil.com/pack/index.pidx
+
       - name: Generate the pack
         run: ./gen_pack.sh
 
-      - name: Initialize the pack root and install the generated pack
-        run: |
-          cpackget init --pack-root "${CMSIS_PACK_ROOT}" https://www.keil.com/pack/index.pidx
-          cpackget add --pack-root "${CMSIS_PACK_ROOT}" --agree-embedded-license output/MicroBit.MicroBit_V2_BSP.*.pack
+      - name: Install the generated pack
+        run: cpackget add --pack-root "${CMSIS_PACK_ROOT}" --agree-embedded-license output/MicroBit.MicroBit_V2_BSP.*.pack
 
       - name: Build Blinky
         run: cbuild Examples/Blinky/Blinky.csolution.yml --packs --update-rte --toolchain GCC
