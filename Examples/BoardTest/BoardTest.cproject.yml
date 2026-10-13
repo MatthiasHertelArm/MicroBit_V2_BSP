@@ -1,0 +1,47 @@
+# A project translates into one executable or library.
+project:
+
+  # List components to use for your application.
+  components:
+    - component: CMSIS:CORE
+    - component: Device:Startup
+
+    - component: CMSIS-Compiler:CORE
+    - component: CMSIS-Compiler:STDOUT:Custom
+    - component: CMSIS-Compiler:STDIN:Custom
+    - component: CMSIS-Compiler:STDERR:Custom
+
+    - component: Board Support:GPIO
+    - component: Board Support:Time
+    - component: Board Support:UART
+    - component: Board Support:I2C
+    - component: Board Support:Motion Sensor
+    - component: Board Support:LED Matrix
+    - component: Board Support:Buttons
+    - component: Board Support:Touch
+    - component: Board Support:Speaker
+    - component: Board Support:Microphone
+    - component: Board Support:Temperature
+
+  # List of source groups and files added to a project or a layer.
+  groups:
+    - group: Documentation
+      files:
+        - file: README.md
+    - group: Source Files
+      files:
+        - file: BoardTest.c
+        - file: retarget_stdio.c
+
+  # GCC: toolbox linker script template with the Nordic .isr_vector section kept at the start of Flash
+  linker:
+    - script:  ./RTE/Device/nRF52833_xxAA/gcc_linker_script.ld.src
+      regions: ./RTE/Device/nRF52833_xxAA/regions_microbit-v2.h
+      for-compiler: GCC
+
+  # List executable file formats to be generated.
+  output:
+    type:
+      - elf
+      - hex
+      - map

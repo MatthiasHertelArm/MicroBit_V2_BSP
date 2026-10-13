@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package schemaVersion="1.7.44" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Open-CMSIS-Pack/Open-CMSIS-Pack-Spec/v1.7.44/schema/PACK.xsd">
+  <name>MicroBit_V2_BSP</name>
+  <vendor>MicroBit</vendor>
+  <description overview="Documents/OVERVIEW.md">BBC micro:bit V2 Board Support Pack (Nordic nRF52833)</description>
+  <url>https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases/download/v0.1.0/</url>
+  <repository type="git">https://github.com/MatthiasHertelArm/MicroBit_V2_BSP.git</repository>
+  <license>LICENSE</license>
+  <licenseSets>
+    <licenseSet id="all" default="true" gating="true">
+      <license title="Apache-2.0 License" name="LICENSE" spdx="Apache-2.0"/>
+    </licenseSet>
+  </licenseSets>
+
+  <releases>
+    <release version="0.1.0" date="2026-10-13">
+      Initial release.
+      - Board description for the BBC micro:bit V2 (mounted nRF52833, on-board DAPLink debug probe, features, schematic)
+      - CMSIS-Driver VIO for the LED matrix (row 1) and buttons A and B
+      - Board Support components: LED Matrix, Buttons, Touch, Speaker, Microphone, I2C, Motion Sensor (LSM303AGR),
+        UART, Temperature, Time
+      - Examples: Blinky (VIO) and BoardTest (all peripherals with serial output), csolution projects for GCC and Arm Compiler 6
+    </release>
+  </releases>
+
+  <keywords>
+    <keyword>micro:bit</keyword>
+    <keyword>microbit</keyword>
+    <keyword>BBC micro:bit V2</keyword>
+    <keyword>nRF52833</keyword>
+    <keyword>Board Support Pack</keyword>
+  </keywords>
+
+  <requirements>
+    <packages>
+      <package vendor="NordicSemiconductor" name="nRF_DeviceFamilyPack" version="8.44.1"/>
+      <package vendor="ARM"                 name="CMSIS"                version="6.0.0-0"/>
+    </packages>
+  </requirements>
+
+  <conditions>
+    <!-- Board condition -->
+    <condition id="microbit-v2">
+      <description>BBC micro:bit V2 board</description>
+      <require Bvendor="MicroBit" Bname="microbit-v2"/>
+    </condition>
+
+    <!-- Board condition + device startup -->
+    <condition id="microbit-v2 Startup">
+      <description>BBC micro:bit V2 board with nRF52833 device startup</description>
+      <require condition="microbit-v2"/>
+      <require Dvendor="Nordic Semiconductor:54" Dname="nRF52833*"/>
+      <require Cclass="Device" Cgroup="Startup"/>
+    </condition>
+
+    <!-- Board condition + device startup + GPIO helpers -->
+    <condition id="microbit-v2 GPIO">
+      <description>BBC micro:bit V2 board with device startup and the board GPIO helpers</description>
+      <require condition="microbit-v2 Startup"/>
+      <require Cclass="Board Support" Cgroup="GPIO"/>
+    </condition>
+
+    <!-- Motion sensor needs the internal I2C bus -->
+    <condition id="microbit-v2 I2C">
+      <description>BBC micro:bit V2 board with the internal I2C bus driver</description>
+      <require condition="microbit-v2 GPIO"/>
+      <require Cclass="Board Support" Cgroup="I2C"/>
+    </condition>
+
+    <!-- Touch sensing uses the busy-wait delay of the GPIO helpers -->
+  </conditions>
+
+  <components>
+    <!-- CMSIS-Driver VIO for the micro:bit V2 -->
+    <component Cclass="CMSIS Driver" Cgroup="VIO" Csub="Board" Cversion="1.0.0" Capiversion="1.0.0" condition="microbit-v2 Startup">
+      <description>Virtual I/O for the BBC micro:bit V2: LED matrix row 1 (vioLED0..4), buttons A and B (vioBUTTON0..1)</description>
+      <RTE_Components_h>
+        #define RTE_VIO_BOARD
+        #define RTE_VIO_MICROBIT_V2
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/vio_microbit_v2.c"/>
+      </files>
+    </component>
+
+    <!-- Board Support: pin map, GPIO helpers and peripheral drivers (header Board/Include/microbit_v2.h) -->
+    <component Cclass="Board Support" Cgroup="GPIO" Cversion="1.0.0" condition="microbit-v2 Startup">
+      <description>Pin map of the micro:bit V2, GPIO helpers and a busy-wait microsecond delay</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_GPIO
+      </RTE_Components_h>
+      <files>
+        <file category="header"  name="Board/Include/microbit_v2.h"/>
+        <file category="sourceC" name="Board/microbit_gpio.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Time" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Millisecond time base and delay on SysTick (defines SysTick_Handler)</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_TIME
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_time.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="UART" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>UARTE0 to the DAPLink interface MCU (USB serial): polled transmit, interrupt-driven receive</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_UART
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_uart.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="I2C" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Internal I2C bus (TWIM0, 400 kHz) to the motion sensor and the interface MCU</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_I2C
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_i2c.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Motion Sensor" Cversion="1.0.0" condition="microbit-v2 I2C">
+      <description>LSM303AGR accelerometer (milli-g) and magnetometer (milligauss)</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_MOTION
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_motion.c"/>
+        <file category="doc"     name="https://www.st.com/resource/en/datasheet/lsm303agr.pdf"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="LED Matrix" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>5x5 LED matrix with TIMER1 refresh, pixels, images and a 5x5 font (not with CMSIS-Driver VIO)</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_DISPLAY
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_display.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Buttons" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Buttons A and B</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_BUTTONS
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_buttons.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Touch" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Capacitive touch logo (charge-time measurement)</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_TOUCH
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_touch.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Speaker" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Speaker tones with PWM0</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_SPEAKER
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_speaker.c"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Microphone" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>Analog MEMS microphone on SAADC (AIN3), power control with RUN_MIC</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_MIC
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_mic.c"/>
+        <file category="doc"     name="https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/384/SPU0410LR5H-QB_RevH_3-27-13.pdf"/>
+      </files>
+    </component>
+
+    <component Cclass="Board Support" Cgroup="Temperature" Cversion="1.0.0" condition="microbit-v2 GPIO">
+      <description>nRF52833 die temperature sensor</description>
+      <RTE_Components_h>
+        #define RTE_MICROBIT_V2_TEMP
+      </RTE_Components_h>
+      <files>
+        <file category="sourceC" name="Board/microbit_temp.c"/>
+      </files>
+    </component>
+  </components>
+
+  <boards>
+    <board vendor="MicroBit" name="microbit-v2" revision="V2.2"
+           salesContact="https://microbit.org/contact/"
+           orderForm="https://microbit.org/buy/">
+      <description>BBC micro:bit V2 with Nordic nRF52833 (Cortex-M4F, 512 KB Flash, 128 KB RAM)</description>
+      <book category="overview"  name="https://tech.microbit.org/hardware/"                        title="micro:bit V2 Hardware Overview"/>
+      <book category="schematic" name="https://github.com/microbit-foundation/microbit-v2-hardware" title="micro:bit V2 Schematic and Hardware Design Files"/>
+      <book category="manual"    name="https://tech.microbit.org/hardware/edgeconnector/"           title="Edge Connector and Pin Map"/>
+      <book category="manual"    name="https://tech.microbit.org/software/daplink-interface/"       title="DAPLink Interface (On-board Debug Probe)"/>
+      <book category="schematic" name="Documents/MicroBit_V2.2.1_nRF52820_schematic.pdf"              title="micro:bit V2.2.1 Schematic (CC BY-SA 4.0, Micro:bit Educational Foundation)"/>
+      <book category="manual"    name="https://docs.nordicsemi.com/bundle/ps_nrf52833/page/keyfeatures_html5.html" title="nRF52833 Product Specification"/>
+      <book category="other"     name="https://www.st.com/resource/en/datasheet/lsm303agr.pdf"      title="LSM303AGR Accelerometer and Magnetometer Datasheet"/>
+      <book category="other"     name="https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/384/SPU0410LR5H-QB_RevH_3-27-13.pdf" title="SPU0410LR5H-QB MEMS Microphone Datasheet"/>
+      <book category="other"     name="Documents/OVERVIEW.md"                                       title="Guide"/>
+      <mountedDevice    deviceIndex="0" Dvendor="Nordic Semiconductor:54" Dname="nRF52833_xxAA"/>
+      <mountedPart n="1" Hvendor="STMicroelectronics"   Hname="LSM303AGR"        Hvariant="LSM303AGRTR"/>
+      <mountedPart n="1" Hvendor="Knowles"              Hname="SPU0410LR5H-QB"   Hvariant="SPU0410LR5H-QB-7"/>
+      <mountedPart n="1" Hvendor="Nordic Semiconductor" Hname="nRF52820"         Hvariant="nRF52820-QDAA"/>
+      <mountedPart n="1" Hvendor="onsemi"               Hname="NCP114"           Hvariant="NCP114BMX330TCG"/>
+      <mountedPart n="1" Hvendor="Jiangsu Huaneng"      Hname="MLT-8530"/>
+      <feature type="ODbg"          n="1"              name="On-board DAPLink (CMSIS-DAP) debug probe on the nRF52820 interface MCU (NXP KL27Z on V2.0 boards)"/>
+      <feature type="XTAL"          n="32000000"       name="32 MHz HFXO"/>
+      <feature type="XTAL"          n="32768"          name="32.768 kHz LFXO"/>
+      <feature type="PWR"           n="5"              name="USB powered (micro-B)"/>
+      <feature type="Batt"          n="1"              name="JST battery connector, 2x AAA (3 V)"/>
+      <feature type="USB"           n="1"              name="USB micro-B: DAPLink mass storage, CMSIS-DAP, USB serial"/>
+      <feature type="LED"           n="25"             name="5x5 red LED matrix (row/column multiplexed)"/>
+      <feature type="Button"        n="3"              name="User buttons A and B, reset button"/>
+      <feature type="Touch"         n="1"              name="Capacitive touch logo"/>
+      <feature type="Speaker"       n="1"              name="MLT-8530 speaker on P0.00 through a MOSFET"/>
+      <feature type="MIC"           n="1"              name="Knowles SPU0410LR5H-QB-7 analog MEMS microphone (AIN3) with LED indicator, powered from RUN_MIC"/>
+      <feature type="Accelerometer" n="1"              name="LSM303AGR 3-axis accelerometer (internal I2C)"/>
+      <feature type="Compass"       n="1"              name="LSM303AGR 3-axis magnetometer (internal I2C)"/>
+      <feature type="Other"         n="1"              name="Bluetooth Low Energy radio with PCB antenna"/>
+      <feature type="DIO"           n="19"             name="19 GPIOs on the edge connector (3 large touch pads P0/P1/P2)"/>
+      <feature type="AIO"           n="6"              name="Analog inputs on the edge connector"/>
+      <feature type="Edge"          n="1"              name="25-pin card edge connector (1.27 mm pitch)"/>
+      <debugInterface adapter="CMSIS-DAP" connector="Micro-USB"/>
+      <debugProbe connector="Micro-USB" debugClock="10000000" debugLink="swd" name="CMSIS-DAP"/>
+    </board>
+  </boards>
+
+  <examples>
+    <example name="Blinky" folder="Examples/Blinky" doc="README.md">
+      <description>Blinky example with CMSIS-Driver VIO (LED matrix and buttons)</description>
+      <board name="microbit-v2" vendor="MicroBit"/>
+      <project>
+        <environment name="csolution" load="Blinky.csolution.yml"/>
+      </project>
+      <attributes>
+        <category>Getting Started</category>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <component Cclass="CMSIS Driver" Cgroup="VIO"/>
+      </attributes>
+    </example>
+    <example name="BoardTest" folder="Examples/BoardTest" doc="README.md">
+      <description>Exercises all on-board peripherals: LED matrix, buttons, touch logo, speaker, microphone, motion sensor, temperature, UART</description>
+      <board name="microbit-v2" vendor="MicroBit"/>
+      <project>
+        <environment name="csolution" load="BoardTest.csolution.yml"/>
+      </project>
+      <attributes>
+        <category>Board Test</category>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <component Cclass="Board Support"/>
+        <component Cclass="CMSIS-Compiler" Cgroup="STDOUT"/>
+      </attributes>
+    </example>
+  </examples>
+</package>

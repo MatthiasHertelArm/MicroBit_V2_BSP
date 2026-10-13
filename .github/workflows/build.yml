@@ -1,0 +1,58 @@
+name: Build examples
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags: ['v*']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CMSIS_PACK_ROOT: ${{ github.workspace }}/.packs
+
+jobs:
+  build:
+    name: Build Blinky and BoardTest (GCC)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install xmllint for gen-pack
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Install CMSIS-Toolbox, GCC, CMake and Ninja
+        uses: ARM-software/cmsis-actions/vcpkg@v1
+        with:
+          config: ./vcpkg-configuration.json
+
+      - name: Generate the pack
+        run: ./gen_pack.sh
+
+      - name: Initialize the pack root and install the generated pack
+        run: |
+          cpackget init --pack-root "${CMSIS_PACK_ROOT}" https://www.keil.com/pack/index.pidx
+          cpackget add --pack-root "${CMSIS_PACK_ROOT}" --agree-embedded-license output/MicroBit.MicroBit_V2_BSP.*.pack
+
+      - name: Build Blinky
+        run: cbuild Examples/Blinky/Blinky.csolution.yml --packs --update-rte --toolchain GCC
+
+      - name: Build BoardTest
+        run: cbuild Examples/BoardTest/BoardTest.csolution.yml --packs --update-rte --toolchain GCC
+
+      - name: Upload images
+        uses: actions/upload-artifact@v4
+        with:
+          name: microbit-v2-examples
+          path: |
+            Examples/Blinky/out/Blinky/microbit-v2/*/Blinky.hex
+            Examples/Blinky/out/Blinky/microbit-v2/*/Blinky.elf
+            Examples/BoardTest/out/BoardTest/microbit-v2/*/BoardTest.hex
+            Examples/BoardTest/out/BoardTest/microbit-v2/*/BoardTest.elf

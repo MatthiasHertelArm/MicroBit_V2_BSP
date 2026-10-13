@@ -1,0 +1,43 @@
+# A solution is a collection of related projects that share same base configuration.
+solution:
+  created-for: CMSIS-Toolbox@2.12.0
+  cdefault:
+
+  # List of tested compilers that can be selected
+  select-compiler:
+    - compiler: GCC
+    - compiler: AC6
+
+  # List the packs that define the device and/or board.
+  packs:
+    - pack: MicroBit::MicroBit_V2_BSP@^0.1.0
+    - pack: NordicSemiconductor::nRF_DeviceFamilyPack@^8.44.1
+    - pack: ARM::CMSIS@^6.0.0
+    - pack: ARM::CMSIS-Compiler@^2.0.0
+
+  # List different hardware targets that are used to deploy the solution.
+  target-types:
+    - type: microbit-v2
+      board: MicroBit::microbit-v2
+      target-set:
+        - set:
+          debugger:
+            name: CMSIS-DAP@pyOCD
+            protocol: swd
+            clock: 10000000
+          images:
+            - project-context: BoardTest.Debug
+
+  # List of different build configurations.
+  build-types:
+    - type: Debug
+      debug: on
+      optimize: debug
+
+    - type: Release
+      debug: off
+      optimize: balanced
+
+  # List related projects.
+  projects:
+    - project: BoardTest.cproject.yml
