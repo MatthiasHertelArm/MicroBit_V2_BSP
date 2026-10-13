@@ -44,6 +44,11 @@ The script validates the pack description with `packchk` (against the Nordic DFP
 - `.github/workflows/build.yml` installs the tools from `vcpkg-configuration.json`, generates and installs the pack
   and builds the Blinky and BoardTest examples with GCC.
 
+Both workflows install `cmsis-knowledge` from the private repository
+[cmsis-developer-assistant-tools](https://github.com/MatthiasHertelArm/cmsis-developer-assistant-tools) (pinned
+commit) with the repository secret `CDA_TOOLS_TOKEN`, a fine-grained personal access token with read access to that
+repository's contents; `gen_pack.sh` runs `cmsis-knowledge build --strict --fetch .` before packaging.
+
 To release: set the version and date in the `<releases>` section of the pdsc and in the `<url>`, commit, then
 `git tag v<version> && git push --tags`.
 

@@ -40,8 +40,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      # cmsis-knowledge from https://github.com/MatthiasHertelArm/cmsis-developer-assistant-tools (0.1.0).
+      # The repository is private: the secret CDA_TOOLS_TOKEN (a fine-grained token with read access to its
+      # contents) authenticates the install; without the secret the public URL is used.
       - name: Install the knowledge builder
-        run: python3 -m pip install cmsis-developer-assistant-tools==0.1.0
+        env:
+          CDA_TOOLS_TOKEN: ${{ secrets.CDA_TOOLS_TOKEN }}
+        run: >-
+          python3 -m pip install
+          "git+https://${CDA_TOOLS_TOKEN:+x-access-token:${CDA_TOOLS_TOKEN}@}github.com/MatthiasHertelArm/cmsis-developer-assistant-tools.git@e1150bd7164d523e5549913caddd68959afd3be7"
 
       - name: Generate the pack
         run: ./gen_pack.sh
