@@ -25,8 +25,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install xmllint for gen-pack
-        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      - name: Install xmllint and dos2unix for gen-pack
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils dos2unix
 
       - name: Install CMSIS-Toolbox, GCC, CMake and Ninja
         uses: ARM-software/cmsis-actions/vcpkg@v1

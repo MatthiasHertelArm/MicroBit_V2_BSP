@@ -108,7 +108,8 @@ function preprocess() {
 
   # Knowledge for the CMSIS Developer Assistant: .knowledge/units/*.md -> .knowledge/knowledge.db
   # (pip install cmsis-developer-assistant-tools). gen-pack ignores the return value, so stop here on failure.
-  cmsis-knowledge build --strict --fetch . || exit 1
+  # The pack folder comes first: --fetch takes an optional index URL and would swallow a following '.'
+  cmsis-knowledge build . --strict --fetch || exit 1
   return 0
 }
 
