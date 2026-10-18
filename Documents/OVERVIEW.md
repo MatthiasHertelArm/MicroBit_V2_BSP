@@ -10,7 +10,7 @@ The **BBC micro:bit V2 Board Support Pack (BSP)**:
 - Contains the examples Blinky and BoardTest in *csolution format* for the [CMSIS-Toolbox](https://open-cmsis-pack.github.io/cmsis-toolbox/)
   and the VS Code [Arm CMSIS Solution](https://marketplace.visualstudio.com/items?itemName=Arm.cmsis-csolution) extension.
 - Ships the board schematic (CC BY-SA 4.0) and links the datasheets of the nRF52833, LSM303AGR and microphone.
-- Contains knowledge units for the CMSIS Developer Assistant in `knowledge/`.
+- Contains knowledge units for the CMSIS Developer Assistant in `.knowledge/`.
 - Requires the Device Family Pack `NordicSemiconductor::nRF_DeviceFamilyPack` (device header, startup and system
   files, SVD, flash algorithms for the nRF52833) and `ARM::CMSIS`.
 
@@ -23,7 +23,7 @@ The **BBC micro:bit V2 Board Support Pack (BSP)**:
 | `Examples/Blinky`      | Blinky example (csolution), GCC linker script for the Nordic startup file
 | `Examples/BoardTest`   | Exercises all peripherals with serial output and single-key commands
 | `Documents`            | This overview, `MicroBit_V2.2.1_nRF52820_schematic.pdf`
-| `knowledge`            | Knowledge units (troubleshooting, concepts, procedures) for the CMSIS Developer Assistant
+| `.knowledge`           | Knowledge units (troubleshooting, concepts, procedures) for the CMSIS Developer Assistant
 
 ## Software components
 
@@ -90,6 +90,14 @@ The DFP selects Nordic's standard flash algorithm `nrf52xxx.flm`. It refuses to 
 SoftDevice, which the factory firmware of the micro:bit contains. The first download to a factory-programmed board
 therefore fails under pyOCD; program the board once by drag-and-drop of a `.hex` file to the `MICROBIT` drive, then
 pyOCD download and debug work (see the Blinky README).
+
+## Simulator
+
+[mbsim](https://github.com/MatthiasHertelArm/microbit-v2-sim) simulates this board (Cortex-M4F, the nRF52833
+peripherals the drivers use, LED matrix, buttons, touch logo, LSM303AGR, microphone, speaker, UART); Blinky and
+BoardTest run unmodified. It accepts the command line of the `Arm-FVP` debug adapter, so a target-type with
+`debugger: name: Arm-FVP` and `model: <path to mbsim>` builds, runs and debugs in VS Code without a board.
+The procedure is the knowledge unit `.knowledge/units/proc-microbit-v2-simulator.md`.
 
 ## Validation
 

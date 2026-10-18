@@ -3,7 +3,7 @@
   <name>MicroBit_V2_BSP</name>
   <vendor>MicroBit</vendor>
   <description overview="Documents/OVERVIEW.md">BBC micro:bit V2 Board Support Pack (Nordic nRF52833)</description>
-  <url>https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases/download/v0.1.0/</url>
+  <url>https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases/download/v0.1.1/</url>
   <repository type="git">https://github.com/MatthiasHertelArm/MicroBit_V2_BSP.git</repository>
   <license>LICENSE</license>
   <licenseSets>
@@ -13,6 +13,10 @@
   </licenseSets>
 
   <releases>
+    <release version="0.1.1" date="2026-10-18">
+      - Knowledge: procedure to run and debug micro:bit V2 projects in the mbsim simulator (Arm-FVP debug adapter)
+      - Overview: simulator section; knowledge folder is .knowledge
+    </release>
     <release version="0.1.0" date="2026-10-13">
       Initial release.
       - Board description for the BBC micro:bit V2 (mounted nRF52833, on-board DAPLink debug probe, features, schematic)

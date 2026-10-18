@@ -7,7 +7,7 @@ Source of the CMSIS-Pack `MicroBit::MicroBit_V2_BSP`: board support for the BBC 
 Nordic `nRF_DeviceFamilyPack`. See [Documents/OVERVIEW.md](Documents/OVERVIEW.md) for the content.
 
 Releases: packs are attached to the [GitHub releases](https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases);
-install one with `cpackget add https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases/download/v0.1.0/MicroBit.MicroBit_V2_BSP.0.1.0.pack`.
+install one with `cpackget add https://github.com/MatthiasHertelArm/MicroBit_V2_BSP/releases/download/v0.1.1/MicroBit.MicroBit_V2_BSP.0.1.1.pack`.
 
 ## Repository structure
 
@@ -18,7 +18,7 @@ install one with `cpackget add https://github.com/MatthiasHertelArm/MicroBit_V2_
 | `Examples/Blinky/`               | Blinky example (VIO) in csolution format
 | `Examples/BoardTest/`            | All peripherals with serial output and commands
 | `Documents/`                     | Pack overview and the board schematic (CC BY-SA 4.0)
-| `knowledge/`                     | Knowledge units for the CMSIS Developer Assistant knowledge base
+| `.knowledge/`                    | Knowledge units for the CMSIS Developer Assistant knowledge base
 | `gen_pack.sh`                    | Pack generation script ([gen-pack](https://github.com/Open-CMSIS-Pack/gen-pack) library)
 | `vcpkg-configuration.json`       | Tool environment (CMSIS-Toolbox, GCC, CMake, Ninja) for the Arm Environment Manager in VS Code
 
@@ -74,6 +74,10 @@ regions header from `Examples/Blinky/RTE/Device/nRF52833_xxAA/` (see the notes i
 The on-board DAPLink probe is a CMSIS-DAP probe (SWD). The Blinky example is configured for the
 Arm CMSIS Debugger with pyOCD (`CMSIS-DAP@pyOCD`). Programming by drag-and-drop of the generated
 `.hex` file to the `MICROBIT` drive also works.
+
+Without a board, the examples run and debug in the simulator
+[mbsim](https://github.com/MatthiasHertelArm/microbit-v2-sim) through the `Arm-FVP` debug adapter; download and
+target-type setup are in [.knowledge/units/proc-microbit-v2-simulator.md](.knowledge/units/proc-microbit-v2-simulator.md).
 
 ## License
 

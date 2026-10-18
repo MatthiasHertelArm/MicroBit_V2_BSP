@@ -28,5 +28,6 @@ The assistant offers these units only in projects that use this pack.
 | `units/concept-lsm303agr-i2c.md` | concept | LSM303AGR registers, addresses, scaling, as used and verified |
 | `units/concept-nrf52-peripheral-recipes.md` | concept | Minimal register sequences for UARTE, TWIM, SAADC, PWM, TIMER, TEMP on nRF52833 |
 | `units/proc-microbit-v2-bring-up.md` | procedure | Build, download and verify a csolution on the micro:bit V2 |
+| `units/proc-microbit-v2-simulator.md` | procedure | Download mbsim and debug a csolution in the simulator (Arm-FVP adapter) |
 | `units/proc-bsp-on-foreign-dfp.md` | procedure | Writing a BSP pack on top of a vendor DFP that predates the toolbox |
 | `units/rule-drag-and-drop-when-pyocd-erase-fails.md` | rule | Use the mass-storage programmer before fighting a vendor flash algorithm |
