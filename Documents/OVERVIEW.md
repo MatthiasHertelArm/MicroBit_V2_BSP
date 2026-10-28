@@ -93,7 +93,7 @@ pyOCD download and debug work (see the Blinky README).
 
 ## Simulator
 
-[mbsim](https://github.com/MatthiasHertelArm/microbit-v2-sim) simulates this board (Cortex-M4F, the nRF52833
+[mbsim](https://github.com/MatthiasHertel80/mbsim) simulates this board (Cortex-M4F, the nRF52833
 peripherals the drivers use, LED matrix, buttons, touch logo, LSM303AGR, microphone, speaker, UART); Blinky and
 BoardTest run unmodified. It accepts the command line of the `Arm-FVP` debug adapter, so a target-type with
 `debugger: name: Arm-FVP` and `model: <path to mbsim>` builds, runs and debugs in VS Code without a board.

@@ -76,7 +76,7 @@ Arm CMSIS Debugger with pyOCD (`CMSIS-DAP@pyOCD`). Programming by drag-and-drop 
 `.hex` file to the `MICROBIT` drive also works.
 
 Without a board, the examples run and debug in the simulator
-[mbsim](https://github.com/MatthiasHertelArm/microbit-v2-sim) through the `Arm-FVP` debug adapter; download and
+[mbsim](https://github.com/MatthiasHertel80/mbsim) through the `Arm-FVP` debug adapter; download and
 target-type setup are in [.knowledge/units/proc-microbit-v2-simulator.md](.knowledge/units/proc-microbit-v2-simulator.md).
 
 ## License

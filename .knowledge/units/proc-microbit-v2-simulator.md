@@ -2,7 +2,7 @@
 id: proc-microbit-v2-simulator
 type: procedure
 title: "Run and debug micro:bit V2 projects without hardware in the mbsim simulator"
-summary: "Download mbsim, the micro:bit V2 simulator, from its GitHub releases and add a target-type with the Arm-FVP debug adapter, so Load & Debug, the UART and the board inputs work without a board."
+summary: "Download mbsim, a simulator that works with the BBC micro:bit V2, from its GitHub releases and add a target-type with the Arm-FVP debug adapter, so Load & Debug, the UART and the board inputs work without a board."
 domain: debug
 status: draft
 applies_to:
@@ -21,27 +21,28 @@ stop_conditions:
   - "Address already in use for the GDB server: another mbsim, pyOCD or FVP holds port 3333; stop it, or give the target-set another gdbserver port"
   - "macOS refuses to open mbsim: clear the quarantine attribute (step 1)"
 references: [proc-microbit-v2-bring-up, concept-microbit-v2-bsp-components]
-source: microbit-v2-sim 0.3.0 (README, docs/decisions/0004-cmsis-debugger-integration.md) and the FVP.adapter.json template of CMSIS Solution 1.72.0; verified on macOS 2026-10-18
+source: mbsim 0.3.2 (README, docs/getting-started.md, docs/decisions/0004-cmsis-debugger-integration.md) and the FVP.adapter.json template of CMSIS Solution 1.72.0; steps verified on macOS 2026-10-18 with 0.3.0
 license: Apache-2.0
 ---
 
-mbsim (github.com/MatthiasHertelArm/microbit-v2-sim) simulates the board this pack describes: the
-Cortex-M4F, the nRF52833 peripherals the BSP drivers use, and the board parts (LED matrix, buttons, touch logo,
-LSM303AGR, microphone, speaker, UART to the interface MCU). Blinky and BoardTest run unmodified. It is a GDB
-server for the Arm CMSIS Debugger and shows the board in a window, where the inputs are operated.
+mbsim (github.com/MatthiasHertel80/mbsim, up to 0.3.1 MatthiasHertelArm/microbit-v2-sim) simulates the board
+this pack describes: the Cortex-M4F, the nRF52833 peripherals the BSP drivers use, and the board parts (LED
+matrix, buttons, touch logo, LSM303AGR, microphone, speaker, UART to the interface MCU). Blinky and BoardTest run
+unmodified. It is a GDB server for the Arm CMSIS Debugger and shows the board in a window, where the inputs are
+operated.
 Not modelled: RADIO, NFCT and USBD (their registers read as zero, with a warning).
 
 ## Steps
 
-1. **Download.** From github.com/MatthiasHertelArm/microbit-v2-sim/releases take the archive for the host:
+1. **Download.** From github.com/MatthiasHertel80/mbsim/releases take the archive for the host:
    `mbsim-<version>-<host>.tar.gz` with `<host>` = `linux-x64`, `linux-arm64`, `macos-arm64` or `macos-x64`,
    or `mbsim-<version>-windows-x64.zip` / `windows-arm64.zip`; `SHA256SUMS` lists the checksums. For example:
 
    ```sh
-   curl -LO https://github.com/MatthiasHertelArm/microbit-v2-sim/releases/download/v0.3.0/mbsim-v0.3.0-macos-arm64.tar.gz
-   curl -LO https://github.com/MatthiasHertelArm/microbit-v2-sim/releases/download/v0.3.0/SHA256SUMS
+   curl -LO https://github.com/MatthiasHertel80/mbsim/releases/download/v0.3.2/mbsim-v0.3.2-macos-arm64.tar.gz
+   curl -LO https://github.com/MatthiasHertel80/mbsim/releases/download/v0.3.2/SHA256SUMS
    shasum -a 256 -c SHA256SUMS --ignore-missing      # Linux: sha256sum -c SHA256SUMS --ignore-missing
-   tar -xzf mbsim-v0.3.0-macos-arm64.tar.gz
+   tar -xzf mbsim-v0.3.2-macos-arm64.tar.gz
    ```
 
    Unpack to a folder without spaces in its path. The archive holds the folder `mbsim-<version>-<host>` with
@@ -49,7 +50,8 @@ Not modelled: RADIO, NFCT and USBD (their registers read as zero, with a warning
    - macOS: the binary is not signed. When it was downloaded with a browser, macOS refuses to open it until
      `xattr -d com.apple.quarantine mbsim` clears the quarantine attribute; `curl` does not set it.
    - Linux: the window needs X11 or Wayland with libxkbcommon; sound and the host microphone need libasound2.
-   - Check: `mbsim --version` prints `mbsim 0.3.0`.
+   - Take 0.3.1 or later: the archives of 0.3.0 were built without the board window.
+   - Check: `mbsim --version` prints `mbsim 0.3.2`.
 
 2. **Add a target-type** to the csolution, next to the one for the board. It uses the `Arm-FVP` debug adapter
    that CMSIS Solution already has, so nothing is installed into VS Code:
@@ -107,8 +109,9 @@ Not modelled: RADIO, NFCT and USBD (their registers read as zero, with a warning
 ## Limits of this setup
 
 - The Arm-FVP template turns off the second debugger connection, so Live Watch stays off. For Live Watch install
-  the adapter `microbit-v2-sim` that ships in the archive (`mbsim register-cmsis-adapter` shows what it adds;
-  `--apply --backup-dir DIR` adds it) and use `debugger: name: microbit-v2-sim` instead of `Arm-FVP`.
+  the adapter `mbsim` that ships in the archive (`mbsim register-cmsis-adapter` shows what it adds;
+  `--apply --backup-dir DIR` adds it) and use `debugger: name: mbsim` instead of `Arm-FVP`. Up to 0.3.1 the
+  adapter was called `microbit-v2-sim`; that name still works.
 - Without VS Code, for tests in CI: `mbsim BoardTest.elf --headless --speed max --scenario test.yaml` drives
   inputs and checks UART text, LED patterns and speaker tones in simulated time; the exit code is 1 when an
   expectation fails. The scenario format is in the mbsim README.
